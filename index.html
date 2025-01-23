@@ -1,0 +1,486 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>98Tok - Social Media in Windows 98 Style</title>
+  <link rel="stylesheet" href="styles.css">
+  <audio id="startup-sound" src="data:audio/wav;base64,UklGRgAAAABEAAABAAAAAAD//wAA"></audio>
+  <audio id="shutdown-sound" preload="auto">
+    <source src="https://www.soundjay.com/computer/sounds/computer-shutdown-01.mp3" type="audio/mpeg">
+  </audio>
+  <style>
+    /* Additional styling for the create account button in OOBE */
+    .create-account-btn {
+      position: relative;
+      z-index: 10;
+      background-color: navy;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .create-account-btn:hover {
+      background-color: #0000A0;
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 6px rgba(0,0,0,0.4);
+    }
+
+    .create-account-btn:active {
+      transform: translateY(1px);
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .login-content .quick-login {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .quick-login-users {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .quick-login-user {
+      background-color: #C0C0C0;
+      border: 2px outset;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-login-user:hover {
+      background-color: #A0A0A0;
+      border: 2px inset;
+    }
+
+    .quick-login-container {
+      max-height: 300px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #808080 #C0C0C0;
+      margin-top: 10px;
+    }
+
+    .quick-login-container::-webkit-scrollbar {
+      width: 16px;
+    }
+
+    .quick-login-container::-webkit-scrollbar-track {
+      background: #C0C0C0;
+      border: 2px outset #FFFFFF;
+    }
+
+    .quick-login-container::-webkit-scrollbar-thumb {
+      background: #808080;
+      border: 2px outset #FFFFFF;
+    }
+
+    .quick-login-container::-webkit-scrollbar-thumb:hover {
+      background: #A0A0A0;
+    }
+
+    .login-window .pagination-container {
+      background-color: #C0C0C0;
+      border: 2px outset #FFFFFF;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-window .page-navigation {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .login-window .page-navigation button {
+      background-color: #C0C0C0;
+      border: 2px outset;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .login-window .page-navigation button:disabled {
+      background-color: #A0A0A0;
+      border: 2px inset;
+      cursor: not-allowed;
+    }
+
+    /* Start Menu Styles */
+    .start-menu {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      width: 200px;
+      background-color: #C0C0C0;
+      border: 2px outset #FFFFFF;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+    }
+
+    .start-menu-item {
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .start-menu-item:hover {
+      background-color: navy;
+      color: white;
+    }
+
+    /* Window Control Styles */
+    .window-controls {
+      display: flex;
+      align-items: center;
+    }
+
+    .window-controls ._minimize, 
+    .window-controls ._maximize, 
+    .window-controls ._close {
+      background-color: #C0C0C0;
+      border: 2px outset;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 2px;
+    }
+
+    .window-controls ._close:hover,
+    .window-controls ._minimize:hover,
+    .window-controls ._maximize:hover {
+      background-color: #A0A0A0;
+      border: 2px inset;
+    }
+  </style>
+</head>
+<body>
+  <div id="login-screen" class="login-screen" style="display: flex;">
+    <div class="login-window window">
+      <div class="window-title-bar">
+        <span>98Tok - Login</span>
+        <div class="window-controls">
+          <button class="_shutdown">×</button>
+        </div>
+      </div>
+      <div class="login-content">
+        <div class="login-logo">98Tok</div>
+        <form id="login-form">
+          <input type="text" id="username-input" placeholder="Username" required>
+          <button type="submit">Log In</button>
+        </form>
+        <div class="quick-login">
+          <p>Quick Login:</p>
+          <div class="quick-login-container">
+            <div class="quick-login-users" id="quick-login-users">
+              <!-- Quick login users will be dynamically populated -->
+            </div>
+          </div>
+          <div class="pagination-container" id="quick-login-pagination">
+            <div class="page-navigation">
+              <button id="prev-users-btn">Previous</button>
+              <span id="users-page-info">Page 1 of 1</span>
+              <button id="next-users-btn">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="desktop" style="display: none;">
+    <div id="taskbar">
+      <button class="start-button" id="start-menu-btn">Start</button>
+      <div class="system-tray">
+        <span id="time"></span>
+        <button id="recovery-btn" style="margin-left: 10px;">Recovery</button>
+      </div>
+    </div>
+
+    <!-- Start Menu -->
+    <div id="start-menu" class="start-menu">
+      <div class="start-menu-item" id="start-shutdown">Shut Down</div>
+      <div class="start-menu-item" id="start-logout">Log Out</div>
+      <div class="start-menu-item" id="start-profile">Profile</div>
+      <div class="start-menu-item" id="start-recovery">System Recovery</div>
+      <div class="start-menu-item" id="start-control-panel">Control Panel</div>
+    </div>
+
+    <div id="app-window" class="window">
+      <div class="window-title-bar">
+        <span>98Tok - Video Sharing</span>
+        <div class="window-controls">
+          <button class="_minimize">_</button>
+          <button class="_maximize">□</button>
+          <button class="_close" id="shutdown-btn">×</button>
+        </div>
+      </div>
+      <div class="window-content">
+        <div class="search-container">
+          <input type="text" id="search-input" placeholder="Search videos...">
+          <button id="search-btn">Search</button>
+        </div>
+        <div class="feed-navigation">
+          <button id="for-you-btn" class="feed-nav-btn active">For You</button>
+          <button id="explore-btn" class="feed-nav-btn">Explore</button>
+        </div>
+        <div class="hashtag-bar">
+          <span class="hashtag">#90sVibes</span>
+          <span class="hashtag">#RetroContent</span>
+          <span class="hashtag">#WindowsDays</span>
+        </div>
+        <div id="video-feed">
+          <!-- Video content will be dynamically loaded here -->
+        </div>
+        <div id="video-controls">
+          <button id="create-video">Create Video</button>
+          <button id="refresh-feed">Refresh Feed</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Video player modal -->
+    <div id="video-player-modal" class="modal" style="display: none;">
+      <div class="modal-content window">
+        <div class="window-title-bar">
+          <span id="video-title">Video Player</span>
+          <div class="window-controls">
+            <button class="_close-video">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="video-player-placeholder">
+            <p>Video playback simulation (90s style)</p>
+            <div class="progress-bar"></div>
+            <div class="video-controls">
+              <button class="play-pause">▶</button>
+              <button class="stop">◼</button>
+            </div>
+          </div>
+          <div class="video-details">
+            <p id="video-user">Uploaded by: </p>
+            <p id="video-views">Views: </p>
+            <p id="video-hashtags">Hashtags: </p>
+          </div>
+          <div class="comments-section">
+            <h3>Comments</h3>
+            <div class="add-comment-section">
+              <input type="text" id="comment-input" placeholder="Add a comment...">
+              <button id="submit-comment">Post</button>
+            </div>
+            <div id="video-comments" class="comments-container">
+              <!-- Comments will be dynamically populated here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logout-modal" class="modal" style="display: none;">
+      <div class="modal-content window">
+        <div class="window-title-bar">
+          <span>Logout Confirmation</span>
+          <div class="window-controls">
+            <button class="_close-logout">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to log out and shut down 98Tok?</p>
+          <div class="logout-buttons">
+            <button id="confirm-logout">Yes</button>
+            <button id="cancel-logout">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div id="user-profile-modal" class="modal" style="display: none;">
+      <div class="modal-content window">
+        <div class="window-title-bar">
+          <span id="profile-username">User Profile</span>
+          <div class="window-controls">
+            <button class="_close-profile">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="user-profile">
+            <div class="profile-header">
+              <div class="profile-avatar">👤</div>
+              <h2 id="profile-display-name"></h2>
+              <p id="profile-bio"></p>
+            </div>
+            <div class="profile-stats">
+              <div class="stat">
+                <strong id="profile-videos-count">0</strong>
+                <span>Videos</span>
+              </div>
+              <div class="stat">
+                <strong id="profile-followers-count">0</strong>
+                <span>Followers</span>
+              </div>
+              <div class="stat">
+                <strong id="profile-following-count">0</strong>
+                <span>Following</span>
+              </div>
+            </div>
+            <div id="profile-videos-container" class="profile-videos">
+              <!-- User's videos will be dynamically loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Favorites Modal -->
+    <div id="favorites-modal" class="modal" style="display: none;">
+      <div class="modal-content window">
+        <div class="window-title-bar">
+          <span>Favorites</span>
+          <div class="window-controls">
+            <button class="_close-favorites">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id="favorites-list">
+            <!-- Favorites will be dynamically loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hashtag Filter Modal -->
+    <div id="hashtag-filter-modal" class="modal hashtag-filter-modal" style="display: none;">
+      <div class="modal-content window">
+        <div class="window-title-bar">
+          <span id="hashtag-filter-title">Filtered Videos</span>
+          <div class="window-controls">
+            <button class="_close-hashtag-filter">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id="hashtag-filter-content" class="hashtag-filter-content">
+            <!-- Filtered videos will be dynamically loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Upload Modal -->
+    <div id="video-upload-modal" class="modal" style="display: none;">
+      <div class="modal-content window">
+        <div class="window-title-bar">
+          <span>Upload Video</span>
+          <div class="window-controls">
+            <button class="_close-upload">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="upload-methods">
+            <h3>Upload a Video</h3>
+            <div class="upload-options">
+              <div class="webcam-upload">
+                <h4>Record with Webcam</h4>
+                <video id="webcam-preview" width="320" height="240" style="display: none;"></video>
+                <div class="webcam-controls">
+                  <button id="start-webcam">Start Webcam</button>
+                  <button id="record-webcam" disabled>Start Recording</button>
+                  <button id="stop-webcam-recording" disabled>Stop Recording</button>
+                </div>
+              </div>
+              <div class="file-upload">
+                <h4>Upload from File</h4>
+                <input type="file" id="video-file-input" accept="video/*">
+                <div id="file-preview" class="file-preview">
+                  <p>No file selected</p>
+                </div>
+              </div>
+            </div>
+            <div class="upload-form">
+              <input type="text" id="video-title" placeholder="Video Title" required>
+              <textarea id="video-description" placeholder="Video Description"></textarea>
+              <input type="text" id="video-hashtags" placeholder="#hashtags separated by space">
+              <button id="submit-upload">Upload Video</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Page Size Selection Window -->
+    <div id="page-size-window" class="window" style="display: none; width: 300px; position: absolute; right: 20px; top: 50px;">
+      <div class="window-title-bar">
+        <span>Videos per Page</span>
+        <div class="window-controls">
+          <button class="_close-page-size">×</button>
+        </div>
+      </div>
+      <div class="window-content page-size-content">
+        <h3>Select Number of Videos</h3>
+        <div id="page-size-options">
+          <!-- Page size options will be dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Notifications Modal -->
+  <div id="notifications-modal" class="modal" style="display: none;">
+    <div class="modal-content window">
+      <div class="window-title-bar">
+        <span>Notifications</span>
+        <div class="window-controls">
+          <button class="_close-notifications">×</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div id="notifications-list">
+          <!-- Notifications will be dynamically loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recovery Modal -->
+  <div id="recovery-modal" class="modal" style="display: none;">
+    <div class="modal-content window">
+      <div class="window-title-bar">
+        <span>98Tok Recovery</span>
+        <div class="window-controls">
+          <button class="_close-recovery">×</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h3>System Recovery</h3>
+        <p>If you're experiencing issues with 98Tok, try these options:</p>
+        <div class="recovery-options">
+          <button id="reset-app">Reset App</button>
+          <button id="clear-cache">Clear Cache</button>
+          <button id="reload-page">Reload Page</button>
+        </div>
+        <div id="recovery-log" class="recovery-log">
+          <!-- Recovery log will be dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
