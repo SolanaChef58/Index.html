@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gay Cheeseburger Delight</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="cheeseburger-container">
+    <!-- Cheeseburger SVG -->
+    <svg class="cheeseburger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+      <!-- Top Bun -->
+      <ellipse cx="100" cy="50" rx="80" ry="20" fill="#D2691E"/>
+      <path d="M20,50 Q100,100 180,50" fill="#F4A460"/>
+      
+      <!-- Lettuce -->
+      <path d="M25,60 Q100,90 175,60 Q100,80 25,60" fill="#228B22"/>
+      
+      <!-- Cheese -->
+      <rect x="40" y="70" width="120" height="10" fill="#FFD700"/>
+      
+      <!-- Patty -->
+      <rect x="40" y="80" width="120" height="20" fill="#8B4513"/>
+      
+      <!-- Bottom Bun -->
+      <ellipse cx="100" cy="110" rx="80" ry="20" fill="#D2691E"/>
+      <path d="M20,110 Q100,130 180,110" fill="#F4A460"/>
+    </svg>
+  </div>
+  <script>
+    function createSparkle() {
+      const sparkle = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      sparkle.setAttribute("class", "sparkle");
+      sparkle.setAttribute("width", "20");
+      sparkle.setAttribute("height", "20");
+      sparkle.setAttribute("viewBox", "0 0 20 20");
+      
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", "M10 0 L13 7 L20 10 L13 13 L10 20 L7 13 L0 10 L7 7 Z");
+      path.setAttribute("fill", `hsl(${Math.random() * 360}, 100%, 75%)`);
+      
+      sparkle.appendChild(path);
+      sparkle.style.left = Math.random() * window.innerWidth + 'px';
+      sparkle.style.top = Math.random() * window.innerHeight + 'px';
+      
+      document.body.appendChild(sparkle);
+      
+      setTimeout(() => {
+        sparkle.remove();
+      }, 1000);
+    }
+
+    setInterval(createSparkle, 200);
+  </script>
+</body>
+</html>

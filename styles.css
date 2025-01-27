@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(
+    45deg,
+    #ff0018,
+    #ffa52c,
+    #ffff41,
+    #008018,
+    #0000f9,
+    #86007d
+  );
+  background-size: 600% 600%;
+  animation: rainbow 10s ease infinite;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cheeseburger-container {
+  animation: float 3s ease-in-out infinite;
+  position: relative;
+}
+
+.cheeseburger {
+  width: 200px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  animation: sparkle-fade 1s ease forwards;
+}
+
+@keyframes sparkle-fade {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
