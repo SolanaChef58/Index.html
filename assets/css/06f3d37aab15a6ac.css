@@ -1,0 +1,14 @@
+.tweet-container_root__0rJLq{width:100%;min-width:250px;max-width:550px;overflow:hidden;color:var(--tweet-font-color);font-family:var(--tweet-font-family);font-weight:400;box-sizing:border-box;border:var(--tweet-border);border-radius:12px;margin:var(--tweet-container-margin);background-color:var(--tweet-bg-color);transition-property:background-color,box-shadow;transition-duration:.2s}
+.tweet-container_root__0rJLq:hover{background-color:var(--tweet-bg-color-hover)}
+.tweet-container_article__0ERPK{position:relative;box-sizing:inherit;padding:.75rem 1rem}
+.tweet-in-reply-to_root__o784R{text-decoration:none;color:var(--tweet-font-color-secondary);font-size:.9375rem;line-height:1.25rem;margin-bottom:.25rem;overflow-wrap:break-word;white-space:pre-wrap}
+.tweet-in-reply-to_root__o784R:hover{text-decoration-thickness:1px;text-decoration-line:underline}
+.tweet-info-created-at_root__KaxZi{color:inherit;text-decoration:none;font-size:var(--tweet-info-font-size);line-height:var(--tweet-info-line-height)}
+.tweet-info-created-at_root__KaxZi:hover{text-decoration-thickness:1px;text-decoration-line:underline}
+.quoted-tweet-header_header___qrcQ{display:flex;padding:.75rem .75rem 0;line-height:var(--tweet-header-line-height);font-size:var(--tweet-header-font-size);white-space:nowrap;overflow-wrap:break-word;overflow:hidden}
+.quoted-tweet-header_avatar__lGzrW{position:relative;height:20px;width:20px}
+.quoted-tweet-header_avatarSquare__l_eYT{border-radius:4px}
+.quoted-tweet-header_author__k48VI{display:flex;margin:0 .5rem}
+.quoted-tweet-header_authorText__FULly{font-weight:700;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+.quoted-tweet-header_username__YLPXR{color:var(--tweet-font-color-secondary);text-decoration:none;text-overflow:ellipsis;margin-left:.125rem}
+.quoted-tweet-body_root__szSfI{font-size:var(--tweet-quoted-body-font-size);font-weight:var(--tweet-quoted-body-font-weight);line-height:var(--tweet-quoted-body-line-height);margin:var(--tweet-quoted-body-margin);overflow-wrap:break-word;white-space:pre-wrap;padding:0 .75rem}
